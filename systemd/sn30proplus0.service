@@ -1,0 +1,11 @@
+[Unit]
+Description=Service to call xboxdrv for 8BitDo SN 30 Pro+ controller
+
+[Service]
+Type=forking
+User=root
+ExecStart=/opt/controller-udev-rules/bin/xboxdrv_init.sh add sn30proplus0
+ExecStop=/opt/controller-udev-rules/bin/xboxdrv_init.sh rm sn30proplus0
+
+[Install]
+WantedBy=multi-user.target

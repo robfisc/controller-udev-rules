@@ -1,0 +1,15 @@
+---
+  - name: Copy systemd files
+    copy:
+      src: "{{ item }}"
+      dest: /opt/controller-udev-rules/systemd/
+    become: true
+    become_user: root
+
+  - name: Link systemd files
+    file:
+      src: '/opt/controller-udev-rules/systemd/{{ item | basename }}'
+      dest: '/etc/systemd/system/{{ item | basename }}'
+      state: link
+    become: true
+    become_user: root

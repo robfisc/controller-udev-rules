@@ -1,0 +1,19 @@
+---
+  - name: Change 'retroarch' folder permissions
+    file:
+      path: /opt/controller-udev-rules/retroarch
+      mode: '0777'
+    become: true
+    become_user: root
+
+  - name: Copy retroarch cfg files
+    copy:
+      src: "{{ item }}"
+      dest: /opt/controller-udev-rules/retroarch/
+      mode: '0644'
+
+  - name: Link retroarch files
+    file:
+      src: '/opt/controller-udev-rules/retroarch/{{ item | basename }}'
+      dest: '/opt/retropie/configs/all/retroarch/autoconfig/{{ item | basename }}'
+      state: link

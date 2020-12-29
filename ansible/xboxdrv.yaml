@@ -1,0 +1,62 @@
+---
+- hosts: retropie
+  tasks:
+    - name: Install xboxdrv
+      apt:
+        name: xboxdrv
+      become: true
+      become_user: root
+
+    - name: Create target directories if they do not exist
+      file:
+        path: '/opt/{{ item }}'
+        state: directory
+        mode: '0755'
+        owner: root
+      loop:
+        - controller-udev-rules
+        - controller-udev-rules/bin
+        - controller-udev-rules/lock
+        - controller-udev-rules/log
+        - controller-udev-rules/systemd
+        - controller-udev-rules/retroarch
+        - controller-udev-rules/udev
+      become: true
+      become_user: root
+
+    - name: Copy bin folder
+      copy:
+        src: "{{ item }}"
+        dest: /opt/controller-udev-rules/bin/
+        mode: '0755'
+      with_fileglob:
+        - ../bin/*
+      become: true
+      become_user: root
+
+    - include_tasks: retroarch.yaml
+      with_fileglob:
+        - ../retroarch/*
+
+    # copy files and link to final destination
+    - include_tasks: systemd.yaml
+      with_fileglob:
+        - ../systemd/*
+
+    - include_tasks: udev.yaml
+      with_fileglob:
+        - ../udev/*
+
+    - name: "Reload UDEV rules"
+      shell: udevadm control --reload-rules && udevadm trigger
+      become: true
+      become_user: root
+
+    - name: Copy xboxdrv folder
+      copy:
+        src: "{{ item }}"
+        dest: /opt/controller-udev-rules/xboxdrv/
+      with_fileglob:
+        - ../xboxdrv/*
+      become: true
+      become_user: root

@@ -1,0 +1,68 @@
+# 8BitDo SN30 Pro Plus
+# ====================
+#
+#
+#   xboxdrv --evdev /dev/input/event0 --config $CONFIG_DIR/sn30proplus.xboxdrv
+#
+#
+
+[xboxdrv]
+
+device-name = 8BitDo SN30 Pro Plus
+
+detach-kernel-driver = true
+
+# force-feedback does not work here. causes error:
+# bad lexical cast: source type value could not be interpreted as target
+# force-feedback = true
+
+deadzone = 4000
+deadzone-trigger = 15%
+
+# This displays events received from the controller, if you are
+# working on a configuration you want to set this to true:
+
+evdev-debug = false
+
+mimic-xpad = false
+
+
+evdev-grab = true
+
+silent = true
+
+
+[evdev-absmap]
+ABS_X = x1
+ABS_Y = y1
+ABS_RX = x2
+ABS_RY = y2
+
+ABS_HAT0X = dpad_x
+ABS_HAT0Y = dpad_y
+
+# [axismap]
+# Y1=Y1
+# Y2=X2
+# X2=Y2
+
+[evdev-keymap]
+BTN_SOUTH = a
+BTN_EAST = b
+BTN_C = x
+BTN_NORTH = y
+BTN_WEST = lb
+BTN_Z = rb
+BTN_SELECT = tl
+BTN_START = tr
+BTN_THUMBL = guide
+BTN_TL2 = back
+BTN_TR2 = start
+BTN_TL = lt
+BTN_TR = rt
+
+# [calibration]
+# Y1=32767:0:-32768
+# X2=32767:0:-32768
+
+# EOF #

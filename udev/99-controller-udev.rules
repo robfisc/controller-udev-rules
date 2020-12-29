@@ -1,0 +1,17 @@
+# chmod to avoid double recognition of controllers
+# ENV{ID_INPUT_JOYSTICK}="1",  does not work with xboxdrv
+
+#
+# Controller 1
+#
+SUBSYSTEM=="input", ATTRS{uniq}=="e4:17:d8:03:0a:00", MODE="0600", ACTION=="add", SYMLINK+="input/sn30proplus0", RUN+="/bin/chmod 600 /dev/$name", RUN+="/bin/systemctl start sn30proplus0"
+
+SUBSYSTEM=="input", ATTRS{uniq}=="e4:17:d8:03:0a:00", ACTION=="remove", RUN+="/bin/systemctl stop sn30proplus0"
+
+
+#
+# Controller 2
+#
+SUBSYSTEM=="input", ATTRS{uniq}=="e4:17:d8:16:15:0a", MODE="0600", ACTION=="add", SYMLINK+="input/sn30proplus1", RUN+="/bin/chmod 600 /dev/$name", RUN+="/bin/systemctl start sn30proplus1"
+
+SUBSYSTEM=="input", ATTRS{uniq}=="e4:17:d8:16:15:0a", ACTION=="remove", RUN+="/bin/systemctl stop sn30proplus1"

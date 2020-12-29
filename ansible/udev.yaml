@@ -1,0 +1,16 @@
+---
+  - name: Copy UDEV rules files
+    copy:
+      src: "{{ item }}"
+      dest: /opt/controller-udev-rules/udev/
+    become: true
+    become_user: root
+
+  - name: Link UDEV rules files
+    file:
+      src: '/opt/controller-udev-rules/udev/{{ item | basename }}'
+      dest: '/etc/udev/rules.d/{{ item | basename }}'
+      state: link
+    become: true
+    become_user: root
+
