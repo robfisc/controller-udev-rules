@@ -24,7 +24,7 @@ Steps
     ```bash
     ansible-playbook -i retropie, -e "pipelining=True"  -e 'ansible_python_interpreter=/usr/bin/python3' ansible/xboxdrv.yaml
     ```
- - Optionally, compile xboxdrv from source to fix 60 second delay, see [xboxdrv_fix/xboxdrv_fx.md](xboxdrv_fix/xboxdrv_fx.md). Adjust bin/xboxdrv_init.sh to reference correct xboxdrv executable.
+ - Optionally, compile xboxdrv from source to fix 60 second delay, see [xboxdrv_fix/xboxdrv_fix.md](xboxdrv_fix/xboxdrv_fix.md). Adjust [bin/xboxdrv_init.sh](bin/xboxdrv_init.sh) to reference correct xboxdrv executable.
 
 
 ## Inspired by
