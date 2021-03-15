@@ -1,17 +1,67 @@
-# chmod to avoid double recognition of controllers
+# ###################################
+# Explanation of UDEV Rule Parameters
+# ###################################
+
+#
+# Explanations of matching criteria
+#
+
+# initial filter criterion to match events for /dev/input
+# SUBSYSTEM=="input"
+
+# only match input devices like /dev/input/eventXX
+# ignore /dev/input/jsXX, which would create a second event / trigger
+# KERNEL=="event*",
 # ENV{ID_INPUT_JOYSTICK}="1",  does not work with xboxdrv
+
+# match HW address of controller
+# ATTRS{uniq} ==
+
+# trigger when device is added or removed, respectively
+# ACTION=="add"
+# ACTION=="remove"
+
+
+#
+# Explanation of actions
+#
+
+# chmod to avoid double recognition of controllers, e.g. by retroarch
+# RUN+="/bin/chmod 600 /dev/$name"
+# MODE="0600" # does not seem to work properly without the chmod command (maybe due to initial lack of KERNEL criterion)
+
+# create unique symlink that is referenced in the xboxdrv call in xboxdrv_init.sh
+# the parameter is given to xboxdrv_init.sh in systemd config files
+# SYMLINK+="input/sn30proplus0"
+
+# start systemd service for particular controller
+# RUN+="/bin/systemctl start sn30proplus0"
+
+# debug actions for verbose logging
+# RUN+="/bin/sh -c 'echo sn30proplus0 /dev/$name >> /opt/controller-udev-rules/log/xboxdrv_init.log'"
+# RUN+="/bin/sh -c 'echo sn30proplus1 /dev/$name >> /opt/controller-udev-rules/log/xboxdrv_init.log'"
+
+
+
+
+
+# #########################
+# Controller Configurations
+# #########################
+
+#
+# Controller 0
+#
+KERNEL=="event*", SUBSYSTEM=="input", ATTRS{uniq}=="e4:17:d8:03:0a:00", MODE="0600", ACTION=="add", SYMLINK+="input/sn30proplus0", RUN+="/bin/chmod 600 /dev/$name", RUN+="/bin/systemctl start sn30proplus0"
+
+
+KERNEL=="event*", SUBSYSTEM=="input", ATTRS{uniq}=="e4:17:d8:03:0a:00", ACTION=="remove", RUN+="/opt/controller-udev-rules/bin/xboxdrv_init.sh rm sn30proplus0"
+
 
 #
 # Controller 1
 #
-SUBSYSTEM=="input", ATTRS{uniq}=="e4:17:d8:03:0a:00", MODE="0600", ACTION=="add", SYMLINK+="input/sn30proplus0", RUN+="/bin/chmod 600 /dev/$name", RUN+="/bin/systemctl start sn30proplus0"
-
-SUBSYSTEM=="input", ATTRS{uniq}=="e4:17:d8:03:0a:00", ACTION=="remove", RUN+="/opt/controller-udev-rules/bin/xboxdrv_init.sh rm sn30proplus0"
+KERNEL=="event*", SUBSYSTEM=="input", ATTRS{uniq}=="e4:17:d8:16:15:0a", MODE="0600", ACTION=="add", SYMLINK+="input/sn30proplus1", RUN+="/bin/chmod 600 /dev/$name", RUN+="/bin/systemctl start sn30proplus1"
 
 
-#
-# Controller 2
-#
-SUBSYSTEM=="input", ATTRS{uniq}=="e4:17:d8:16:15:0a", MODE="0600", ACTION=="add", SYMLINK+="input/sn30proplus1", RUN+="/bin/chmod 600 /dev/$name", RUN+="/bin/systemctl start sn30proplus1"
-
-SUBSYSTEM=="input", ATTRS{uniq}=="e4:17:d8:16:15:0a", ACTION=="remove", RUN+="/opt/controller-udev-rules/bin/xboxdrv_init.sh rm sn30proplus1"
+KERNEL=="event*", SUBSYSTEM=="input", ATTRS{uniq}=="e4:17:d8:16:15:0a", ACTION=="remove", RUN+="/opt/controller-udev-rules/bin/xboxdrv_init.sh rm sn30proplus1"
