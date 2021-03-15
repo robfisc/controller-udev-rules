@@ -15,6 +15,8 @@ CONTROLLER_NAME="$2"
 #
 # Constants
 #
+#XBOXDRV="/usr/bin/xboxdrv"
+XBOXDRV="/usr/local/src/xboxdrv/xboxdrv"  # compare xboxdrv_fix/xboxdrv_fix.md
 BASE_DIR="/opt/controller-udev-rules"
 LOGFILE="${BASE_DIR}/log/xboxdrv_init.log"
 CONFIG_FILE="${BASE_DIR}/xboxdrv/sn30proplus.xboxdrv"
@@ -47,8 +49,8 @@ if [ "${MODE}" == "add" ]
 then
     # --pid-file ${PID_FILE}
     # PID option does not seem to work, maybe only in daemon mode?
-    debug && echo "/usr/bin/xboxdrv --evdev /dev/input/${CONTROLLER_NAME} --config ${CONFIG_FILE}" | adddate >> ${LOGFILE}
-    /usr/bin/xboxdrv --evdev /dev/input/${CONTROLLER_NAME} --config ${CONFIG_FILE} & >> ${LOGFILE}
+    debug && echo "${XBOXDRV} --evdev /dev/input/${CONTROLLER_NAME} --config ${CONFIG_FILE}" | adddate >> ${LOGFILE}
+    ${XBOXDRV} --evdev /dev/input/${CONTROLLER_NAME} --config ${CONFIG_FILE} & >> ${LOGFILE}
     echo $! > ${PID_FILE}
     echo "${CONTROLLER_NAME} was connected." | adddate >> ${LOGFILE}
 

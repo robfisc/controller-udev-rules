@@ -6,12 +6,14 @@ Many game controllers show up under identical names, i.e. "Gamepad" or in case o
 To allow using multiple controller types with the same name at the same time, different types of controllers are assigned different names as follows:
 An UDEV rule creates a unique device link under `/dev/input/` and calls a system service that starts an instance of xboxdrv. xboxdrv will create a new device interface configured with a different name. To avoid multiple identification of a controller under its original device and the xboddrv device, the original device link's permissions are changed to avoid access by user applications. Setup is done using [Ansible](https://www.ansible.com).
 
+Once the setup procedure is completed, the affected controllers should automatically appear under the names configured in xboxdrv/sn30proplus.xboxdrv when they are connected.
+
 ## Setup
 
 Steps
  - Setup public key SSH authentication for host *retropie*.
  - Connect bluetooth controllers on remote host.
- - Setup virtual env
+ - Optionally, create virtual env and install requirements
     ```bash
     python -m venv env
     source env/bin/activate
@@ -22,6 +24,7 @@ Steps
     ```bash
     ansible-playbook -i retropie, -e "pipelining=True"  -e 'ansible_python_interpreter=/usr/bin/python3' ansible/xboxdrv.yaml
     ```
+ - Optionally, compile xboxdrv from source to fix 60 second delay, see [xboxdrv_fix/xboxdrv_fx.md](xboxdrv_fix/xboxdrv_fx.md). Adjust bin/xboxdrv_init.sh to reference correct xboxdrv executable.
 
 
 ## Inspired by
