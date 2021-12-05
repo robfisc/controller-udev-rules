@@ -1,6 +1,6 @@
 # Fix of 60 Second Delay of xboxdrv
 
-xboxdrv has a known issue that runs into a 60 s timeout when using a bluetooth controller. A switch from call of `libusb_handle_events()` to `libusb_handle_events_timeout_completed() fixes the issue.
+xboxdrv has a known issue that runs into a 60 s timeout when using a bluetooth controller. A switch from call of `libusb_handle_events()` to `libusb_handle_events_timeout_completed()` fixes the issue.
 
 References:
  - [Original xboxdrv bug report: The 60 seconds delay #144](https://github.com/xboxdrv/xboxdrv/issues/144)
